@@ -2,6 +2,10 @@
 name = "bevy-flights"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "a small crate for position based flights in the bevy game engine. intended for bullet hells."
+repository = "https://github.com/bricout-thomas/bevy-flights"
+keywords = ["bevy", "gamedev"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
