@@ -1,12 +1,15 @@
 use crate::flights::prelude::*;
 
+#[derive(Default)]
 pub struct DefaultFlightsPlugin<Reference: TimeReference + Sync + Send + 'static = bevy_time::Time>
 (std::marker::PhantomData<Reference>);
 impl<Reference: TimeReference + Sync + Send + 'static> bevy_app::Plugin for DefaultFlightsPlugin<Reference> {
     fn build(&self, app: &mut bevy_app::App) {
         app
-            .add_system(translation2d_system::<LinearFlight, Reference>)
+            .add_system(translation2d_system::<LinearFlight2d, Reference>)
             .add_system(translation3d_system::<LinearFlight3d, Reference>)
+            .add_system(translation2d_system::<AffineFlight2d, Reference>)
+            .add_system(translation3d_system::<AffineFlight3d, Reference>)
 
             .add_system(translation2d_system::<CircleFlight, Reference>)
         ;
