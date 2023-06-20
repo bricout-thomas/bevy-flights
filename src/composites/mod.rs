@@ -32,9 +32,30 @@ impl<A: Translation3dDescriptor, B: Translation3dDescriptor> TranslationSum3d<A,
 }
 
 /// Feeds the result of the time modifier function into the descriptor
-pub struct Feed<E: TimeModifier, T: Translation2dDescriptor> { modifier: E, descriptor: T }
+pub struct Feed<E: TimeModifier, T: Translation2dDescriptor> { pub modifier: E, pub descriptor: T }
 impl<E: TimeModifier, T: Translation2dDescriptor> Translation2dDescriptor for Feed<E, T> {
     fn translation(&self, t: f32) -> bevy_math::Vec2 {
         self.descriptor.translation(self.modifier.output(t))
+    }
+}
+impl<E: TimeModifier, T: Translation2dDescriptor> Feed<E, T> {
+    pub fn new(modifier: E, descriptor: T) -> Self {
+        Self {
+            modifier,
+            descriptor
+        }
+    }
+}
+
+/// Scales the result of a Translation2dDescriptor
+pub struct Scale2d<T: Translation2dDescriptor> { pub scale: f32, pub descriptor: T } 
+impl <T: Translation2dDescriptor> Translation2dDescriptor for Scale2d<T> {
+    fn translation(&self, t: f32) -> bevy_math::Vec2 {
+        self.descriptor.translation(t) * self.scale
+    }
+}
+impl<T: Translation2dDescriptor> Scale2d<T> {
+    pub fn new(scale: f32, descriptor: T) -> Self {
+        Self{ scale, descriptor }
     }
 }
