@@ -47,3 +47,13 @@ pub trait RotationDescriptor: Sized + Sync + Send {
     /// The rotation relative to time since startup
     fn rotation(&self, t: f32) -> Quat;
 }
+
+pub trait TimeModifier: Sized + Sync + Send {
+    fn output(&self, s: f32) -> f32;
+    /// serve as an easing function
+    fn ease(&self, s: f32) -> f32 {
+        if s < 0. { 0. }
+        else if s > 1. { 1. }
+        else { self.output(s) }
+    }
+}
