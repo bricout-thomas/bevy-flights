@@ -1,7 +1,7 @@
 use bevy_ecs::prelude::Component;
 use bevy_math::{Vec2, Vec3};
 
-use crate::{traits::{Translation2dDescriptor, Translation3dDescriptor}, composites::{TranslationSum2d, TranslationSum3d}, prelude::{FixedTranslation2d, FixedTranslation3d}};
+use crate::{traits::{Translation2dDescriptor, Translation3dDescriptor}, composites::{TranslationSum2d, TranslationSum3d}};
 
 // Describes moving in a continuous linear flight
 // that crosses the origin
@@ -23,23 +23,23 @@ impl Translation3dDescriptor for LinearFlight3d {
     fn translation(&self, t: f32) -> Vec3 { self.slope * t }
 }
 
-pub type AffineFlight2d = TranslationSum2d<FixedTranslation2d, LinearFlight2d>;
+pub type AffineFlight2d = TranslationSum2d<Vec2, LinearFlight2d>;
 
 impl AffineFlight2d {
     pub fn from_velocity(velocity: Vec2, initial_position: Vec2, initial_time: f32) -> Self {
         TranslationSum2d::sum( 
-            FixedTranslation2d::new(initial_position - velocity * initial_time),
+            initial_position - velocity * initial_time,
             LinearFlight2d { slope: velocity },
         )
     }
 }
 
-pub type AffineFlight3d = TranslationSum3d<FixedTranslation3d, LinearFlight3d>;
+pub type AffineFlight3d = TranslationSum3d<Vec3, LinearFlight3d>;
 
 impl AffineFlight3d {
     pub fn from_velocity(velocity: Vec3, initial_position: Vec3, initial_time: f32) -> Self {
         TranslationSum3d::sum( 
-            FixedTranslation3d::new(initial_position - velocity * initial_time),
+            initial_position - velocity * initial_time,
             LinearFlight3d { slope: velocity },
         )
     }

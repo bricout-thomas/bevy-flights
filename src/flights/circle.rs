@@ -1,7 +1,5 @@
 use bevy_math::Vec2;
 
-use super::fixed::FixedTranslation2d;
-
 use crate::prelude::{Accelerate, TimeOffset};
 use crate::traits::Translation2dDescriptor;
 use crate::composites::{TranslationSum2d, Scale2d, Feed};
@@ -75,22 +73,22 @@ impl CenteredCircleFlight {
 /// A circle flight not centered around the origin
 pub type CircleFlight = 
     TranslationSum2d<
-        FixedTranslation2d, 
+        Vec2, 
         CenteredCircleFlight
     >
 ;
 impl CircleFlight {
     pub fn create(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
         Self::sum(
-            FixedTranslation2d::new(center),
+            center,
             CenteredCircleFlight::create(radius, frequency, time_offset)
         )
     }
     pub fn center(&self) -> Vec2 {
-        self.a.translation
+        self.a
     }
     pub fn center_mut(&mut self) -> &mut Vec2 {
-        &mut self.a.translation
+        &mut self.a
     }
     pub fn radius_mut(&mut self) -> &mut f32 {
         self.b.radius_mut()
