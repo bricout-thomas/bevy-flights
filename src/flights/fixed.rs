@@ -3,7 +3,7 @@ use bevy_math::{Vec2, Vec3};
 use crate::traits::{Translation2dDescriptor, Translation3dDescriptor};
 
 pub struct FixedTranslation2d {
-    translation: Vec2,
+    pub translation: Vec2,
 }
 
 impl Translation2dDescriptor for FixedTranslation2d {

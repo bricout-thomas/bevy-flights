@@ -33,31 +33,78 @@ impl UnitCircleFlight {
     const VALUE: Self = TranslationSum2d::sum(HorizontalCircleFlight, VerticalUnitCircleFlight);
 }
 
+pub type CenteredCircleFlight = 
+    Feed< 
+        TimeOffset, 
+        Feed<
+            Accelerate,
+            Scale2d<UnitCircleFlight>
+        >
+    >
+;
+impl CenteredCircleFlight {
+    pub fn create(radius: f32, frequency: f32, time_offset: f32) -> Self {
+        Feed::new(
+            TimeOffset(time_offset),
+            Feed::new(
+                Accelerate(frequency),
+                Scale2d::new(
+                    radius,
+                    UnitCircleFlight::VALUE
+                )
+            )
+        )
+    }
+    pub fn radius_mut(&mut self) -> &mut f32 {
+        &mut self.descriptor.descriptor.scale
+    }
+    pub fn radius(&mut self) -> f32 {
+        self.descriptor.descriptor.scale
+    }
+    pub fn frequency(&self) -> f32 {
+        self.descriptor.modifier.0
+    }
+    pub fn time_offset(&self) -> f32 {
+        self.modifier.0
+    }
+    pub fn time_offset_mut(&mut self) -> &mut f32 {
+        &mut self.modifier.0
+    }
+}
+
 /// A circle flight not centered around the origin
 pub type CircleFlight = 
     TranslationSum2d<
         FixedTranslation2d, 
-        Feed< 
-            TimeOffset, 
-            Feed<
-                Accelerate,
-                Scale2d<UnitCircleFlight>
-            >
-        >
+        CenteredCircleFlight
     >
 ;
 impl CircleFlight {
-    pub fn new(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
+    pub fn create(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
         Self::sum(
             FixedTranslation2d::new(center),
-            Feed::new(
-                TimeOffset(time_offset),
-                Feed::new(
-                    Accelerate(frequency),
-                    Scale2d::new(
-                        radius,
-                        UnitCircleFlight::VALUE
-                    )))
+            CenteredCircleFlight::create(radius, frequency, time_offset)
         )
+    }
+    pub fn center(&self) -> Vec2 {
+        self.a.translation
+    }
+    pub fn center_mut(&mut self) -> &mut Vec2 {
+        &mut self.a.translation
+    }
+    pub fn radius_mut(&mut self) -> &mut f32 {
+        self.b.radius_mut()
+    }
+    pub fn radius(&mut self) -> f32 {
+        self.b.radius()
+    }
+    pub fn frequency(&self) -> f32 {
+        self.b.frequency()
+    }
+    pub fn time_offset(&self) -> f32 {
+        self.b.time_offset()
+    }
+    pub fn time_offset_mut(&mut self) -> &mut f32 {
+        self.b.time_offset_mut()
     }
 }
