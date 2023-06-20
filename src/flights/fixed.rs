@@ -18,6 +18,9 @@ impl FixedTranslation2d {
             translation,
         }
     }
+    pub fn from_xy(x: f32, y: f32) -> Self {
+        Self::new(Vec2::new(x, y))
+    }
 }
 
 pub struct FixedTranslation3d {
@@ -35,5 +38,8 @@ impl FixedTranslation3d {
         Self {
             translation,
         }
+    }
+    pub fn from_xyz(x: f32, y: f32, z: f32) -> Self {
+        Self::new(Vec3::new(x, y, z))
     }
 }

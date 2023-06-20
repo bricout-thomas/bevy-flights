@@ -9,9 +9,9 @@ use crate::composites::TranslationSum2d;
 /// around the origin
 /// but only one the horizontal axis
 pub struct HorizontalCircleFlight {
-    radius: f32,
-    frequency: f32,
-    time_offset: f32,
+    pub radius: f32,
+    pub frequency: f32,
+    pub time_offset: f32,
 }
 
 impl Translation2dDescriptor for HorizontalCircleFlight {
@@ -24,9 +24,9 @@ impl Translation2dDescriptor for HorizontalCircleFlight {
 // around the origin
 // but only one the vertical axis.
 pub struct VerticalCircleFlight {
-    radius: f32,
-    frequency: f32,
-    time_offset: f32,
+    pub radius: f32,
+    pub frequency: f32,
+    pub time_offset: f32,
 }
 
 impl Translation2dDescriptor for VerticalCircleFlight {
@@ -40,9 +40,9 @@ impl Translation2dDescriptor for VerticalCircleFlight {
 /// with frequency turns per second
 /// time = 0 corresponds to being at the right of the circle
 pub struct CircleFlight {
-    radius: f32,
-    frequency: f32,
-    time_offset: f32,
+    pub radius: f32,
+    pub frequency: f32,
+    pub time_offset: f32,
 }
 
 impl Translation2dDescriptor for CircleFlight {
@@ -56,7 +56,7 @@ impl Translation2dDescriptor for CircleFlight {
 }
 
 /// A circle flight not centered around the origin
-type OffsetCircleFlight = TranslationSum2d<FixedTranslation2d, CircleFlight>;
+pub type OffsetCircleFlight = TranslationSum2d<FixedTranslation2d, CircleFlight>;
 impl OffsetCircleFlight {
     pub fn new(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
         Self::sum(
