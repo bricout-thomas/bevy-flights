@@ -30,11 +30,11 @@
 #[cfg(test)]
 mod tests;
 
-mod plugin;
-mod flights;
+pub mod plugin;
+pub mod flights;
 pub mod composites;
 
-mod prelude {
+pub mod prelude {
     pub use crate::flights::*;
     pub use crate::plugin::*;
     pub use crate::composites;
