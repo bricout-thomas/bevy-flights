@@ -36,6 +36,7 @@ pub mod composites;
 pub mod traits;
 pub mod wrappers;
 pub mod timemodifiers;
+pub mod timereference;
 
 pub mod prelude {
     pub use crate::flights::prelude::*;
@@ -44,4 +45,5 @@ pub mod prelude {
     pub use crate::traits::*;
     pub use crate::wrappers::*;
     pub use crate::timemodifiers::*;
+    pub use crate::timereference::*;
 }
