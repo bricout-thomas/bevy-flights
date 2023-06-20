@@ -6,17 +6,17 @@ impl VariableDescriptor for f32 {
     }
 }
 
-pub struct Accelerate(pub f32);
-impl VariableDescriptor for Accelerate {
+pub struct Accelerate<V: VariableDescriptor>(pub V);
+impl<V: VariableDescriptor> VariableDescriptor for Accelerate<V> {
     fn output(&self, s: f32) -> f32 {
-        s * self.0
+        s * self.0.output(s)
     }
 }
 
 
-pub struct TimeOffset(pub f32);
-impl VariableDescriptor for TimeOffset {
+pub struct TimeOffset<V: VariableDescriptor>(pub V);
+impl<V: VariableDescriptor> VariableDescriptor for TimeOffset<V> {
     fn output(&self, s: f32) -> f32 {
-        s - self.0
+        s - self.0.output(s)
     }
 }

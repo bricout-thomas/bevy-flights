@@ -1,6 +1,6 @@
 use bevy_math::Vec2;
 
-use crate::prelude::{Accelerate, TimeOffset};
+use crate::prelude::{Accelerate, TimeOffset, VariableDescriptor};
 use crate::traits::Translation2dDescriptor;
 use crate::composites::prelude::{TranslationSum2d, Scale2d, Feed2d};
 
@@ -31,17 +31,17 @@ impl UnitCircleFlight {
     const VALUE: Self = TranslationSum2d::sum(HorizontalCircleFlight, VerticalUnitCircleFlight);
 }
 
-pub type CenteredCircleFlight = 
+pub type CenteredCircleFlight<O: VariableDescriptor, A: VariableDescriptor, S: VariableDescriptor> = 
     Feed2d< 
-        TimeOffset, 
+        TimeOffset<O>, 
         Feed2d<
-            Accelerate,
-            Scale2d<UnitCircleFlight>
+            Accelerate<A>,
+            Scale2d<S, UnitCircleFlight>
         >
     >
 ;
-impl CenteredCircleFlight {
-    pub fn create(radius: f32, frequency: f32, time_offset: f32) -> Self {
+impl<O: VariableDescriptor, A: VariableDescriptor, S: VariableDescriptor> CenteredCircleFlight<O, A, S> {
+    pub fn create(radius:S , frequency: A, time_offset: O) -> Self {
         Feed2d::new(
             TimeOffset(time_offset),
             Feed2d::new(
@@ -53,32 +53,33 @@ impl CenteredCircleFlight {
             )
         )
     }
-    pub fn radius_mut(&mut self) -> &mut f32 {
+    pub fn radius_mut(&mut self) -> &mut S {
         &mut self.descriptor.descriptor.scale
     }
-    pub fn radius(&mut self) -> f32 {
-        self.descriptor.descriptor.scale
+    pub fn radius(&mut self) -> &S {
+        &self.descriptor.descriptor.scale
     }
-    pub fn frequency(&self) -> f32 {
-        self.descriptor.modifier.0
+    pub fn frequency(&self) -> &A {
+        &self.descriptor.modifier.0
     }
-    pub fn time_offset(&self) -> f32 {
-        self.modifier.0
+    pub fn time_offset(&self) -> &O {
+        &self.modifier.0
     }
-    pub fn time_offset_mut(&mut self) -> &mut f32 {
+    pub fn time_offset_mut(&mut self) -> &mut O {
         &mut self.modifier.0
     }
 }
 
 /// A circle flight not centered around the origin
-pub type CircleFlight = 
+pub type CircleFlight<O, A, S> = 
     TranslationSum2d<
         Vec2, 
-        CenteredCircleFlight
+        CenteredCircleFlight<O, A, S>
     >
 ;
-impl CircleFlight {
-    pub fn create(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
+impl<O, A, S> CircleFlight<O, A, S> 
+where S: VariableDescriptor, A: VariableDescriptor, O: VariableDescriptor {
+    pub fn create(center: Vec2, radius: S, frequency: A, time_offset: O) -> Self {
         Self::sum(
             center,
             CenteredCircleFlight::create(radius, frequency, time_offset)
@@ -90,19 +91,19 @@ impl CircleFlight {
     pub fn center_mut(&mut self) -> &mut Vec2 {
         &mut self.a
     }
-    pub fn radius_mut(&mut self) -> &mut f32 {
+    pub fn radius_mut(&mut self) -> &mut S {
         self.b.radius_mut()
     }
-    pub fn radius(&mut self) -> f32 {
+    pub fn radius(&mut self) -> &S {
         self.b.radius()
     }
-    pub fn frequency(&self) -> f32 {
+    pub fn frequency(&self) -> &A {
         self.b.frequency()
     }
-    pub fn time_offset(&self) -> f32 {
+    pub fn time_offset(&self) -> &O {
         self.b.time_offset()
     }
-    pub fn time_offset_mut(&mut self) -> &mut f32 {
+    pub fn time_offset_mut(&mut self) -> &mut O {
         self.b.time_offset_mut()
     }
 }

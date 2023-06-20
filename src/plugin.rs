@@ -11,7 +11,7 @@ impl<Reference: TimeReference + Sync + Send + 'static> bevy_app::Plugin for Defa
             .add_system(translation2d_system::<AffineFlight2d, Reference>)
             .add_system(translation3d_system::<AffineFlight3d, Reference>)
 
-            .add_system(translation2d_system::<CircleFlight, Reference>)
+            .add_system(translation2d_system::<CircleFlight<f32, f32, f32>, Reference>)
         ;
     }
 }
