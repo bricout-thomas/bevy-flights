@@ -1,8 +1,7 @@
 use bevy_ecs::prelude::Component;
-use bevy_transform::prelude::Transform;
 use bevy_math::{Vec2, Vec3};
 
-use super::TrajectoryDescriptor;
+use super::{Translation2dDescriptor, Translation3dDescriptor};
 
 #[derive(Component)]
 pub struct LinearFlight {
@@ -16,15 +15,15 @@ pub struct LinearFlight3d {
     slope: Vec3,
 }
 
-impl TrajectoryDescriptor for LinearFlight3d {
-    fn update(&self, t: f32, transform: &mut Transform) {
-        *transform = transform.with_translation(self.at_origin + self.slope * t)
+impl Translation3dDescriptor for LinearFlight3d {
+    fn translation(&self, t: f32) -> Vec3 {
+        self.at_origin + self.slope * t
     }
 }
 
-impl TrajectoryDescriptor for LinearFlight {
-    fn update(&self, t: f32, transform: &mut Transform) {
-        *transform = transform.with_translation((self.at_origin + self.slope * t).extend(transform.translation.z))
+impl Translation2dDescriptor for LinearFlight {
+    fn translation(&self, t: f32) -> Vec2 {
+        self.at_origin + self.slope * t
     }
 }
 

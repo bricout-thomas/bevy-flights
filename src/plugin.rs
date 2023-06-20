@@ -4,8 +4,8 @@ pub struct DefaultFlightsPlugin;
 impl bevy_app::Plugin for DefaultFlightsPlugin {
     fn build(&self, app: &mut bevy_app::App) {
         app
-            .add_system(flight_system::<LinearFlight>)
-            .add_system(flight_system::<LinearFlight3d>)
+            .add_system(translation2d_system::<LinearFlight>)
+            .add_system(translation3d_system::<LinearFlight3d>)
         ;
     }
 }
@@ -13,13 +13,34 @@ impl bevy_app::Plugin for DefaultFlightsPlugin {
 use bevy_transform::prelude::Transform;
 use bevy_ecs::prelude::*;
 use bevy_time::Time;
-use crate::flights::TrajectoryDescriptor;
-pub fn flight_system<T: TrajectoryDescriptor + Component>(
+use crate::flights::FlightComponent;
+
+pub fn flight_system<T: FlightComponent + Component>(
     mut query: Query<(&mut Transform, &T)>,
     time_res: Res<Time>,
 ) {
     let time = time_res.elapsed_seconds();
     for (mut transform, trajectory) in query.iter_mut() {
-        trajectory.update(time, &mut transform);
+        trajectory.apply(time, &mut transform);
+    }
+}
+
+pub fn translation2d_system<T: Translation2dDescriptor + 'static>(
+    mut query: Query<(&mut Transform, &Translation2dDescriptorWrapper<T>)>,
+    time_res: Res<Time>,
+) {
+    let time = time_res.elapsed_seconds();
+    for (mut transform, trajectory) in query.iter_mut() {
+        trajectory.apply(time, &mut transform);
+    }
+}
+
+pub fn translation3d_system<T: Translation3dDescriptor + 'static>(
+    mut query: Query<(&mut Transform, &Translation3dDescriptorWrapper<T>)>,
+    time_res: Res<Time>,
+) {
+    let time = time_res.elapsed_seconds();
+    for (mut transform, trajectory) in query.iter_mut() {
+        trajectory.apply(time, &mut transform);
     }
 }
