@@ -9,47 +9,28 @@ use crate::composites::{TranslationSum2d, Scale2d, Feed};
 /// Corresponds to spinning in circles
 /// around the origin
 /// but only one the horizontal axis
-pub struct HorizontalCircleFlight {
-    pub radius: f32,
-    pub frequency: f32,
-    pub time_offset: f32,
-}
-
+pub struct HorizontalCircleFlight;
 impl Translation2dDescriptor for HorizontalCircleFlight {
     fn translation(&self, t: f32) -> bevy_math::Vec2 {
-        Vec2::X * ((t - self.time_offset)*self.frequency*std::f32::consts::TAU).cos() * self.radius
+        Vec2::X * (std::f32::consts::TAU * t).cos()
     }
 }
 
 // corresponds to spinning on circles,
 // around the origin
 // but only one the vertical axis.
-pub struct VerticalCircleFlight {
-    pub radius: f32,
-    pub frequency: f32,
-    pub time_offset: f32,
-}
-
-impl Translation2dDescriptor for VerticalCircleFlight {
+pub struct VerticalUnitCircleFlight;
+impl Translation2dDescriptor for VerticalUnitCircleFlight {
     fn translation(&self, t: f32) -> bevy_math::Vec2 {
-        Vec2::Y * ((t - self.time_offset)*self.frequency*std::f32::consts::TAU).sin() * self.radius
+        Vec2::Y * (std::f32::consts::TAU * t).sin()
     }
 }
 
-/// Describe a complete circle flight
-/// around the origin
-/// with frequency turns per second
+/// Describe a complete circle flight around the origin
 /// time = 0 corresponds to being at the right of the circle
-pub struct UnitCircleFlight;
-
-impl Translation2dDescriptor for UnitCircleFlight {
-    fn translation(&self, t: f32) -> Vec2 {
-        let angle = t*std::f32::consts::TAU;
-        Vec2::new(
-            angle.cos(),
-            angle.sin()
-        )
-    }
+pub type UnitCircleFlight = TranslationSum2d<HorizontalCircleFlight, VerticalUnitCircleFlight>;
+impl UnitCircleFlight { 
+    const VALUE: Self = TranslationSum2d::sum(HorizontalCircleFlight, VerticalUnitCircleFlight);
 }
 
 /// A circle flight not centered around the origin
@@ -75,7 +56,7 @@ impl CircleFlight {
                     Accelerate(frequency),
                     Scale2d::new(
                         radius,
-                        UnitCircleFlight
+                        UnitCircleFlight::VALUE
                     )))
         )
     }

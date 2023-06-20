@@ -11,7 +11,7 @@ impl<A: Translation2dDescriptor, B: Translation2dDescriptor> Translation2dDescri
     }
 }
 impl<A: Translation2dDescriptor, B: Translation2dDescriptor> TranslationSum2d<A, B> {
-    pub fn sum(a: A, b: B) -> Self {
+    pub const fn sum(a: A, b: B) -> Self {
         TranslationSum2d { a, b }
     }
 }
@@ -26,7 +26,7 @@ impl<A: Translation3dDescriptor, B: Translation3dDescriptor> Translation3dDescri
     }
 }
 impl<A: Translation3dDescriptor, B: Translation3dDescriptor> TranslationSum3d<A, B> {
-    pub fn sum(a: A, b: B) -> Self {
+    pub const fn sum(a: A, b: B) -> Self {
         Self { a, b }
     }
 }
