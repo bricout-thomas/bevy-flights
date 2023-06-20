@@ -31,7 +31,7 @@ impl UnitCircleFlight {
     const VALUE: Self = TranslationSum2d::sum(HorizontalCircleFlight, VerticalUnitCircleFlight);
 }
 
-pub type CenteredCircleFlight<O: VariableDescriptor, A: VariableDescriptor, S: VariableDescriptor> = 
+pub type CenteredCircleFlight<O, A, S> = 
     Feed2d< 
         TimeOffset<O>, 
         Feed2d<
