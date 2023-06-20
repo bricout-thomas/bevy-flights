@@ -33,9 +33,13 @@ mod tests;
 pub mod plugin;
 pub mod flights;
 pub mod composites;
+pub mod traits;
+pub mod wrappers;
 
 pub mod prelude {
-    pub use crate::flights::*;
+    pub use crate::flights::prelude::*;
     pub use crate::plugin::*;
     pub use crate::composites;
+    pub use crate::traits::*;
+    pub use crate::wrappers::*;
 }

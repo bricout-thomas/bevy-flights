@@ -1,9 +1,8 @@
-use bevy_ecs::prelude::Component;
 use bevy_math::{Vec2, Vec3};
 
-use super::{Translation2dDescriptor, Translation3dDescriptor};
+use crate::traits::{Translation2dDescriptor, Translation3dDescriptor};
 
-struct FixedTranslation2d {
+pub struct FixedTranslation2d {
     translation: Vec2,
 }
 
@@ -14,14 +13,14 @@ impl Translation2dDescriptor for FixedTranslation2d {
 }
 
 impl FixedTranslation2d {
-    fn new(translation: Vec2) -> Self {
+    pub fn new(translation: Vec2) -> Self {
         Self {
             translation,
         }
     }
 }
 
-struct FixedTranslation3d {
+pub struct FixedTranslation3d {
     translation: Vec3,
 }
 
@@ -32,7 +31,7 @@ impl Translation3dDescriptor for FixedTranslation3d {
 }
 
 impl FixedTranslation3d {
-    fn new(translation: Vec3) -> Self {
+    pub fn new(translation: Vec3) -> Self {
         Self {
             translation,
         }

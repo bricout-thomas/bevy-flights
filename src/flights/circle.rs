@@ -1,6 +1,8 @@
 use bevy_math::Vec2;
 
-use super::Translation2dDescriptor;
+use super::fixed::FixedTranslation2d;
+
+use crate::traits::Translation2dDescriptor;
 use crate::composites::TranslationSum2d;
 
 /// Corresponds to spinning in circles
@@ -35,6 +37,8 @@ impl Translation2dDescriptor for VerticalCircleFlight {
 
 /// Describe a complete circle flight
 /// around the origin
+/// with frequency turns per second
+/// time = 0 corresponds to being at the right of the circle
 pub struct CircleFlight {
     radius: f32,
     frequency: f32,
@@ -47,6 +51,21 @@ impl Translation2dDescriptor for CircleFlight {
         Vec2::new(
             angle.cos() * self.radius,
             angle.sin() * self.radius
+        )
+    }
+}
+
+/// A circle flight not centered around the origin
+type OffsetCircleFlight = TranslationSum2d<FixedTranslation2d, CircleFlight>;
+impl OffsetCircleFlight {
+    pub fn new(center: Vec2, radius: f32, frequency: f32, time_offset: f32) -> Self {
+        Self::sum(
+            FixedTranslation2d::new(center),
+            CircleFlight {
+                radius,
+                frequency,
+                time_offset,
+            }
         )
     }
 }

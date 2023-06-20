@@ -1,8 +1,9 @@
 use bevy_ecs::prelude::Component;
 use bevy_math::{Vec2, Vec3};
 
-use super::{Translation2dDescriptor, Translation3dDescriptor};
+use crate::traits::{Translation2dDescriptor, Translation3dDescriptor};
 
+// Describes moving in a continuous linear flight
 #[derive(Component)]
 pub struct LinearFlight {
     at_origin: Vec2,

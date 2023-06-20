@@ -1,4 +1,4 @@
-use crate::flights::*;
+use crate::flights::prelude::*;
 
 pub struct DefaultFlightsPlugin;
 impl bevy_app::Plugin for DefaultFlightsPlugin {
@@ -13,7 +13,9 @@ impl bevy_app::Plugin for DefaultFlightsPlugin {
 use bevy_transform::prelude::Transform;
 use bevy_ecs::prelude::*;
 use bevy_time::Time;
-use crate::flights::FlightComponent;
+
+use crate::traits::*;
+use crate::wrappers::*;
 
 pub fn flight_system<T: FlightComponent + Component>(
     mut query: Query<(&mut Transform, &T)>,
