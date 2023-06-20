@@ -1,5 +1,7 @@
 use bevy_transform::prelude::Transform;
 use bevy_math::{Vec2, Vec3, Quat};
+use prelude::TranslationSum2d;
+use prelude::TranslationSum3d;
 
 use crate::wrappers::*;
 use crate::composites::*;

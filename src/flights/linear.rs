@@ -1,7 +1,7 @@
 use bevy_ecs::prelude::Component;
 use bevy_math::{Vec2, Vec3};
 
-use crate::{traits::{Translation2dDescriptor, Translation3dDescriptor}, composites::{TranslationSum2d, TranslationSum3d}};
+use crate::{traits::{Translation2dDescriptor, Translation3dDescriptor}, composites::prelude::{TranslationSum2d, TranslationSum3d}};
 
 // Describes moving in a continuous linear flight
 // that crosses the origin
