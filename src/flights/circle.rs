@@ -2,7 +2,7 @@ use bevy_math::Vec2;
 
 use crate::prelude::{Accelerate, TimeOffset};
 use crate::traits::Translation2dDescriptor;
-use crate::composites::{TranslationSum2d, Scale2d, Feed};
+use crate::composites::{TranslationSum2d, Scale2d, Feed2d};
 
 /// Corresponds to spinning in circles
 /// around the origin
@@ -32,9 +32,9 @@ impl UnitCircleFlight {
 }
 
 pub type CenteredCircleFlight = 
-    Feed< 
+    Feed2d< 
         TimeOffset, 
-        Feed<
+        Feed2d<
             Accelerate,
             Scale2d<UnitCircleFlight>
         >
@@ -42,9 +42,9 @@ pub type CenteredCircleFlight =
 ;
 impl CenteredCircleFlight {
     pub fn create(radius: f32, frequency: f32, time_offset: f32) -> Self {
-        Feed::new(
+        Feed2d::new(
             TimeOffset(time_offset),
-            Feed::new(
+            Feed2d::new(
                 Accelerate(frequency),
                 Scale2d::new(
                     radius,

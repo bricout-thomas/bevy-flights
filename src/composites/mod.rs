@@ -1,4 +1,4 @@
-use crate::prelude::{Translation2dDescriptor, Translation3dDescriptor, TimeModifier};
+use crate::prelude::{Translation2dDescriptor, Translation3dDescriptor, VariableDescriptor};
 
 /// Sums the result of the a and b
 /// Allows for the creation of more complex movement
@@ -31,14 +31,46 @@ impl<A: Translation3dDescriptor, B: Translation3dDescriptor> TranslationSum3d<A,
     }
 }
 
-/// Feeds the result of the time modifier function into the descriptor
-pub struct Feed<E: TimeModifier, T: Translation2dDescriptor> { pub modifier: E, pub descriptor: T }
-impl<E: TimeModifier, T: Translation2dDescriptor> Translation2dDescriptor for Feed<E, T> {
+/// Feeds the result of the time modifier function into the descriptor 2d
+pub struct Feed2d<E: VariableDescriptor, T: Translation2dDescriptor> { pub modifier: E, pub descriptor: T }
+impl<E: VariableDescriptor, T: Translation2dDescriptor> Translation2dDescriptor for Feed2d<E, T> {
     fn translation(&self, t: f32) -> bevy_math::Vec2 {
         self.descriptor.translation(self.modifier.output(t))
     }
 }
-impl<E: TimeModifier, T: Translation2dDescriptor> Feed<E, T> {
+impl<E: VariableDescriptor, T: Translation2dDescriptor> Feed2d<E, T> {
+    pub fn new(modifier: E, descriptor: T) -> Self {
+        Self {
+            modifier,
+            descriptor
+        }
+    }
+}
+
+/// Feeds the result of the time modifier function into the descriptor 3d
+pub struct Feed3d<E: VariableDescriptor, T: Translation3dDescriptor> { pub modifier: E, pub descriptor: T }
+impl<E: VariableDescriptor, T: Translation3dDescriptor> Translation3dDescriptor for Feed3d<E, T> {
+    fn translation(&self, t: f32) -> bevy_math::Vec3 {
+        self.descriptor.translation(self.modifier.output(t))
+    }
+}
+impl<E: VariableDescriptor, T: Translation3dDescriptor> Feed3d<E, T> {
+    pub fn new(modifier: E, descriptor: T) -> Self {
+        Self {
+            modifier,
+            descriptor
+        }
+    }
+}
+
+/// Feeds the result of the time modifier function into the variable descriptor
+pub struct Feed<E: VariableDescriptor, T: VariableDescriptor> { pub modifier: E, pub descriptor: T }
+impl<E: VariableDescriptor, T: VariableDescriptor> VariableDescriptor for Feed<E, T> {
+    fn output(&self, t: f32) -> f32 {
+        self.descriptor.output(self.modifier.output(t))
+    }
+}
+impl<E: VariableDescriptor, T: VariableDescriptor> Feed<E, T> {
     pub fn new(modifier: E, descriptor: T) -> Self {
         Self {
             modifier,
