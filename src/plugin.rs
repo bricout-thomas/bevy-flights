@@ -1,3 +1,5 @@
+#![allow(invalid_type_param_default)]
+
 use crate::flights::prelude::*;
 
 #[derive(Default)]
@@ -16,6 +18,7 @@ impl<Reference: TimeReference + Sync + Send + 'static> bevy_app::Plugin for Defa
     }
 }
 
+use bevy_time::Time;
 use bevy_transform::prelude::Transform;
 use bevy_ecs::prelude::*;
 
@@ -23,7 +26,7 @@ use crate::timereference::TimeReference;
 use crate::traits::*;
 use crate::wrappers::*;
 
-pub fn flight_system<F: FlightComponent + Component, T: TimeReference + Resource>(
+pub fn flight_system<F: FlightComponent + Component, T: TimeReference + Resource = Time>(
     mut query: Query<(&mut Transform, &F)>,
     time_res: Res<T>,
 ) {
@@ -33,7 +36,7 @@ pub fn flight_system<F: FlightComponent + Component, T: TimeReference + Resource
     }
 }
 
-pub fn translation2d_system<F: Translation2dDescriptor + 'static, T: TimeReference + Resource>(
+pub fn translation2d_system<F: Translation2dDescriptor + 'static, T: TimeReference + Resource = Time>(
     mut query: Query<(&mut Transform, &Translation2dDescriptorWrapper<F>)>,
     time_res: Res<T>,
 ) {
@@ -43,7 +46,7 @@ pub fn translation2d_system<F: Translation2dDescriptor + 'static, T: TimeReferen
     }
 }
 
-pub fn translation3d_system<F: Translation3dDescriptor + 'static, T: TimeReference + Resource>(
+pub fn translation3d_system<F: Translation3dDescriptor + 'static, T: TimeReference + Resource = Time>(
     mut query: Query<(&mut Transform, &Translation3dDescriptorWrapper<F>)>,
     time_res: Res<T>,
 ) {

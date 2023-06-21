@@ -1,8 +1,8 @@
 pub use crate::traits::VariableDescriptor;
 
-impl VariableDescriptor for f32 {
+impl<T: Clone + Into<f32> + Sync + Send + Sized> VariableDescriptor for T {
     fn output(&self, _t: f32) -> f32 {
-        *self
+        self.clone().into()
     }
 }
 
