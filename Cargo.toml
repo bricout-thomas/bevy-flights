@@ -15,6 +15,7 @@ bevy_ecs = { version = "0.10" }
 bevy_math = { version = "0.10" }
 bevy_transform = { version = "0.10" }
 bevy_time = { version = "0.10" }
+bevy-flights-derive = { path = "bevy-flights-derive" }
 
 [dev-dependencies]
 bevy = { version = "0.10", features=["wayland"] }

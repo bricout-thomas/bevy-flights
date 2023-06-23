@@ -20,8 +20,10 @@ impl<V: VariableDescriptor> VariableDescriptor for TimeOffset<V> {
 }
 
 pub mod sine;
+pub mod consts;
 
 pub mod prelude {
     pub use super::*;
     pub use super::sine::*;
+    pub use super::consts::*;
 }

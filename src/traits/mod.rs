@@ -44,6 +44,7 @@ pub trait Translation3dDescriptor: Sized + Sync + Send {
     }
 }
 
+pub use bevy_flights_derive::VariableDescriptor;
 /// Describes a variable that changes over time, and according to its input
 /// Works the same as TranslationDescriptors, expect they don't have this visual stuff
 /// Though I guess it will be used to describes moving along an axis at some point
