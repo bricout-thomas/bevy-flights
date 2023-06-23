@@ -1,34 +1,13 @@
 use bevy_math::Vec2;
 
+use crate::composites::axes::Compose2d;
+use crate::prelude::prelude::{Sine, Cos};
 use crate::prelude::{Accelerate, TimeOffset, VariableDescriptor};
-use crate::traits::Translation2dDescriptor;
 use crate::composites::prelude::{TranslationSum2d, Scale2d, Feed2d};
 
-/// Corresponds to spinning in circles
-/// around the origin
-/// but only one the horizontal axis
-pub struct HorizontalCircleFlight;
-impl Translation2dDescriptor for HorizontalCircleFlight {
-    fn translation(&self, t: f32) -> bevy_math::Vec2 {
-        Vec2::X * (std::f32::consts::TAU * t).cos()
-    }
-}
-
-// corresponds to spinning on circles,
-// around the origin
-// but only one the vertical axis.
-pub struct VerticalUnitCircleFlight;
-impl Translation2dDescriptor for VerticalUnitCircleFlight {
-    fn translation(&self, t: f32) -> bevy_math::Vec2 {
-        Vec2::Y * (std::f32::consts::TAU * t).sin()
-    }
-}
-
-/// Describe a complete circle flight around the origin
-/// time = 0 corresponds to being at the right of the circle
-pub type UnitCircleFlight = TranslationSum2d<HorizontalCircleFlight, VerticalUnitCircleFlight>;
+pub type UnitCircleFlight = Compose2d<Cos, Sine>;
 impl UnitCircleFlight { 
-    const VALUE: Self = TranslationSum2d::sum(HorizontalCircleFlight, VerticalUnitCircleFlight);
+    const VALUE: Self = Compose2d::new(Cos, Sine);
 }
 
 pub type CenteredCircleFlight<O, A, S> = 
