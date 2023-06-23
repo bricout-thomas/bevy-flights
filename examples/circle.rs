@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use bevy_flights::{prelude::*, composites::sums::TranslationSum2d};
+use bevy_flights::{prelude::*, composites::sums::TranslationSum2d, variabledescriptors::prelude::ONE};
 use bevy::prelude::*;
 use bevy_time::common_conditions::on_timer;
 
@@ -31,17 +31,29 @@ fn spawn_cool_flight_bullet(
     )
         .insert(
             CoolFlight::sum(
-                CenteredCircleFlight::create(500., 0.1, time.elapsed_seconds()),
-                CenteredCircleFlight::create(100., 1., time.elapsed_seconds())
+                CenteredCircleFlight::create(BIGRADIUS, SMALLFREQUENCY, time.elapsed_seconds()),
+                CenteredCircleFlight::create(SMALLRADIUS, ONE, time.elapsed_seconds())
             ).wrap()
         )
     ;
 }
 
+#[derive(VariableDescriptor)]
+#[value = 500.]
+struct BIGRADIUS;
+
+#[derive(VariableDescriptor)]
+#[value = 100.]
+struct SMALLRADIUS;
+
+#[derive(VariableDescriptor)]
+#[value = 0.1]
+struct SMALLFREQUENCY;
+
 pub type CoolFlight = 
     TranslationSum2d<
-        CenteredCircleFlight<f32, f32, f32>,
-        CenteredCircleFlight<f32, f32, f32>
+        CenteredCircleFlight<f32, SMALLFREQUENCY, BIGRADIUS>,
+        CenteredCircleFlight<f32, ONE, SMALLRADIUS>
     >
 ;
 
