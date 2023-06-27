@@ -19,6 +19,7 @@ bevy-flights-derive = { path = "bevy-flights-derive" }
 
 [dev-dependencies]
 bevy = { version = "0.10", features=["wayland"] }
+rand = "0.8.5"
 
 [[example]]
 name = "circles"
