@@ -5,7 +5,7 @@ use crate::{traits::{Translation2dDescriptor, Translation3dDescriptor}, composit
 
 // Describes moving in a continuous linear flight
 // that crosses the origin
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct LinearFlight2d {
     pub slope: Vec2,
 }
@@ -14,7 +14,7 @@ impl Translation2dDescriptor for LinearFlight2d {
     fn translation(&self, t: f32) -> Vec2 { self.slope * t }
 }
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct LinearFlight3d {
     pub slope: Vec3,
 }

@@ -47,3 +47,12 @@ impl<E: VariableDescriptor, T: VariableDescriptor> Feed<E, T> {
         }
     }
 }
+
+/// A wrapper that makes the ease function the default
+#[derive(Default)]
+pub struct Ease<E: VariableDescriptor> { pub modifier: E }
+impl<E: VariableDescriptor> VariableDescriptor for Ease<E> {
+    fn output(&self, t: f32) -> f32 {
+        self.modifier.ease(t)
+    }
+}
