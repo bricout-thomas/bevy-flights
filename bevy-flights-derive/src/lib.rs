@@ -1,7 +1,7 @@
 extern crate proc_macro;
 use proc_macro::TokenStream;
 use syn::{parse_macro_input, DeriveInput, Meta};
-use quote::{quote, ToTokens};
+use quote::{quote};
 
 #[proc_macro_derive(VariableDescriptor, attributes(value))]
 pub fn const_variable_descriptor_derive(input: TokenStream) -> TokenStream {

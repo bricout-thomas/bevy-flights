@@ -3,6 +3,7 @@
 use crate::flights::prelude::*;
 use crate::prelude::consts::ONE;
 
+/// This thing seems to make the game crash immediately at runtime so don't use it
 #[derive(Default)]
 pub struct DefaultFlightsPlugin<Reference: TimeReference + Sync + Send + 'static = bevy_time::Time>
 (std::marker::PhantomData<Reference>);

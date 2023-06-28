@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use bevy_flights::{prelude::*, composites::sums::TranslationSum2d, variabledescriptors::prelude::ONE};
+use bevy_flights::{prelude::*, composites::sums::TranslationSum2d, variabledescriptors::prelude::{ONE, ZERO}};
 use bevy::prelude::*;
 use bevy_time::common_conditions::on_timer;
 
@@ -11,7 +11,7 @@ fn main() {
 
         .add_plugin(DefaultFlightsPlugin::<Time>::default())
 
-        .add_system(translation2d_system::<CoolFlight>)
+        .add_system(translation2d_system::<Toff2d<CoolFlight>>)
         .add_system(spawn_cool_flight_bullet.run_if(on_timer(Duration::from_secs_f32(0.005))))
 
         .run()
@@ -31,9 +31,9 @@ fn spawn_cool_flight_bullet(
     )
         .insert(
             CoolFlight::sum(
-                CenteredCircleFlight::create(BIGRADIUS, SMALLFREQUENCY, time.elapsed_seconds()),
-                CenteredCircleFlight::create(SMALLRADIUS, ONE, time.elapsed_seconds())
-            ).wrap()
+                CenteredCircleFlight::create(BIGRADIUS, SMALLFREQUENCY, ZERO),
+                CenteredCircleFlight::create(SMALLRADIUS, ONE, ZERO)
+            ).wrap_with_offset(time.elapsed_seconds())
         )
     ;
 }
@@ -50,10 +50,10 @@ struct SMALLRADIUS;
 #[value = 0.1]
 struct SMALLFREQUENCY;
 
-pub type CoolFlight = 
+type CoolFlight = 
     TranslationSum2d<
-        CenteredCircleFlight<f32, SMALLFREQUENCY, BIGRADIUS>,
-        CenteredCircleFlight<f32, ONE, SMALLRADIUS>
+        CenteredCircleFlight<ZERO, SMALLFREQUENCY, BIGRADIUS>,
+        CenteredCircleFlight<ZERO, ONE, SMALLRADIUS>
     >
 ;
 
