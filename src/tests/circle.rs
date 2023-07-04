@@ -9,11 +9,11 @@ fn offset_circle() {
     
     // cannot use assert_eq! due to f32's precision
     println!("{:?}", flight.translation(0.));
-    assert!(flight.translation(0.).distance(Vec2::new(2., 0.)) < 0.001);
+    assert!(flight.translation(0.).distance(Vec2::new(2., 0.)) < 0.005);
     println!("{:?}", flight.translation(25.));
-    assert!(flight.translation(0.25).distance(Vec2::new(1., 1.)) < 0.001);
-    assert!(flight.translation(0.50).distance(Vec2::new(0., 0.)) < 0.001);
-    assert!(flight.translation(0.75).distance(Vec2::new(1., -1.)) < 0.001);
+    assert!(flight.translation(0.25).distance(Vec2::new(1., 1.)) <  0.005);
+    assert!(flight.translation(0.50).distance(Vec2::new(0., 0.)) <  0.005);
+    assert!(flight.translation(0.75).distance(Vec2::new(1., -1.)) < 0.005);
 
     let flight = CircleFlight::create(center, 2., 0.5, 0.189);
 

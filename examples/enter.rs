@@ -1,7 +1,7 @@
 use std::time::Duration;
 
 use bevy::prelude::*;
-use bevy_flights::{prelude::*, variabledescriptors::prelude::{ONE, ZERO}};
+use bevy_flights::{prelude::*, variabledescriptors::prelude::ONE};
 use bevy_time::common_conditions::on_timer;
 use rand::random;
 

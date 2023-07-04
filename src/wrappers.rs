@@ -24,3 +24,13 @@ impl<T: Translation3dDescriptor> FlightComponent for Translation3dDescriptorWrap
         transform.translation = self.0.translation(t);
     }
 }
+
+/// Allows the modification of the Flight Component at runtime
+/// Without having to actually change the Flight Component using bevy::prelude::Commands
+#[derive(Component)]
+pub struct RunTimeWrapper(pub dyn FlightComponent + Sync + Send);
+impl FlightComponent for RunTimeWrapper {
+    fn apply(&self, t: f32, transform: &mut Transform) {
+        self.0.apply(t, transform);
+    }
+}

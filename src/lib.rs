@@ -18,13 +18,13 @@
 //!   thus implementing `fn translation(&self, t: f32) -> Vec2`
 //!   and call `.wrap()` on it to make it into a component
 //! - add system `bevy_flight::plugin::flight_system::<T>` to your app, or if you used
-//!   `Translation2dDescriptor` `bevy_flight::plugin::position2D_system::<T>`
+//!   `Translation2dDescriptor` `bevy_flight::plugin::position2d_system::<T>`
 //! - insert your custom flight component to your bullets call wrap if necessary.
 //!
 //! How to create sums of flights:
 //! - You may create things like `bevy_flights::composites::TranslationSum2d<CircleFlight, LinearFlight>`
 //!   This implements `Translation2dDescriptor`.
-//! - Dont forget to add system position2D_system for TranslationSum2d<A, B>
+//! - Dont forget to add system position2d_system for TranslationSum2d<A, B>
 //!   Because it's not included in the DefaultFlightsPlugin, even if A and B are.
 //!   ( that would be impossible anyway, one would have to insert an infinite amount of systems )
 
